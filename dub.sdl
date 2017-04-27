@@ -1,0 +1,12 @@
+name "dapplicationbase"
+description "A simple base for creating a d application.."
+copyright "Copyright © 2017"
+authors "Paul Crane"
+targetType "library"
+configuration "library" {
+	targetType "library"
+}
+
+dependency "simpletimers" version="*"
+dependency "dpathutils" version="*"
+dependency "ctoptions" version="*"
