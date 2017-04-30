@@ -8,6 +8,7 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 	import dpathutils.config;
 	import ctoptions.getoptmixin;
 	import ctoptions.structoptions;
+	import std.path : buildNormalizedPath;
 
 	class Application : InheritedClass
 	{
@@ -19,10 +20,12 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 
 		void create(string[] arguments)
 		{
-			createDirs("config");
+			createConfigDirs("config");
+			loadOptions();
+			handleCmdLineArguments(arguments);
 		}
 
-		void createDirs(T...)(T dirs)
+		void createConfigDirs(T...)(T dirs)
 		{
 			foreach(dir; dirs)
 			{
@@ -32,6 +35,10 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 
 		void loadOptions()
 		{
+			immutable string fileName = buildNormalizedPath(path_.getDir("config"), "app.config");
+
+			options_.createDefaultFile(fileName);
+			options_.loadFile(fileName);
 		}
 
 		void handleCmdLineArguments(string[] arguments)
