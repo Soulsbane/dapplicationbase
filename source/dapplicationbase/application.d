@@ -51,7 +51,7 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 			}
 			catch(GetOptMixinException ex)
 			{
-				throw new GetOptMixinException(ex.msg);
+				writeln(ex.msg);
 			}
 		}
 
