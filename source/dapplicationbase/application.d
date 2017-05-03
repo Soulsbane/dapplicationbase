@@ -1,6 +1,6 @@
 module dapplicationbase.application;
 
-import std.path : buildNormalizedPath;
+public import std.path : buildNormalizedPath;
 public import std.stdio;
 
 public import dpathutils.config;
@@ -15,16 +15,11 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 	class Application : InheritedClass
 	{
 	public:
-		this(const string organizationName, const string applicationName) @safe
+		void create(const string organizationName, const string applicationName)
 		{
 			path_.create(organizationName, applicationName);
-		}
-
-		void create(string[] arguments)
-		{
 			createConfigDirs("config");
 			loadOptions();
-			handleCmdLineArguments(arguments);
 		}
 
 		void createConfigDirs(T...)(T dirs)
@@ -45,18 +40,13 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 
 		void handleCmdLineArguments(string[] arguments)
 		{
-			try
-			{
-				generateGetOptCode!AppOptions(arguments, options_);
-			}
-			catch(GetOptMixinException ex)
-			{
-				writeln(ex.msg);
-			}
+			gen = new GetOptCodeGenerator!(AppOptions);
+			gen.generate(arguments, options_);
 		}
 
 	protected:
 		ConfigPath path_;
 		StructOptions!AppOptions options_;
+		GetOptCodeGenerator!(AppOptions) gen;
 	}
 }
