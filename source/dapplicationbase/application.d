@@ -40,13 +40,13 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 
 		void handleCmdLineArguments(string[] arguments)
 		{
-			gen = new GetOptCodeGenerator!(AppOptions);
-			gen.generate(arguments, options_);
+			getOptGen_ = new GetOptCodeGenerator!(AppOptions);
+			getOptGen_.generate(arguments, options_);
 		}
 
 	protected:
 		ConfigPath path_;
 		StructOptions!AppOptions options_;
-		GetOptCodeGenerator!(AppOptions) gen;
+		GetOptCodeGenerator!(AppOptions) getOptGen_;
 	}
 }
