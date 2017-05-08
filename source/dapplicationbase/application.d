@@ -44,6 +44,11 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 			getOptGen_.generate(arguments, options_);
 		}
 
+		void setCallback(alias name, Func)(Func func)
+		{
+			getOptGen_.setCallback!(name)(func);
+		}
+
 	protected:
 		ConfigPath path_;
 		StructOptions!AppOptions options_;
