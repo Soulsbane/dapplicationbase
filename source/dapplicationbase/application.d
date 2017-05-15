@@ -58,10 +58,7 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 
 		void createConfigDirs(T...)(T dirs)
 		{
-			foreach(dir; dirs)
-			{
-				path_.createDir(dir);
-			}
+			path_.createDir(dirs);
 		}
 
 		void loadOptions()
