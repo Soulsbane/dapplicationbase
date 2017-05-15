@@ -18,8 +18,9 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 	public:
 		this()
 		{
-			// We has to jump through a bunch of hoops here since D doesn't support multiple inheritance.
+			// We have to jump through a bunch of hoops here since D doesn't support multiple inheritance.
 			this.getOptGen_ = new GetOptCodeGenerator!(AppOptions);
+
 			this.getOptGen_.setCallback!"onNoArguments"(&onNoArguments);
 			this.getOptGen_.setCallback!"onHelp"(&onHelp);
 			this.getOptGen_.setCallback!"onValidArguments"(&onValidArguments);
@@ -29,7 +30,7 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 
 		// We have to reimplement these callbacks since alias this doesn't support override of a member function
 		// in the inherited class.
-		void onNoArguments(){}
+		void onNoArguments() {}
 
 		void onHelp(Option[] options)
 		{
