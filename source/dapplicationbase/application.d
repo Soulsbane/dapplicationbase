@@ -75,10 +75,16 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 			getOptGen_.generate(arguments, options_);
 		}
 
+		void setCallback(alias name, Func)(Func callback)
+		{
+			this.getOptGen_.setCallback!name(callback);
+		}
+
+	public alias getOptGen_ this;
+
 	protected:
 		ConfigPath path_;
 		StructOptions!AppOptions options_;
 		GetOptCodeGenerator!(AppOptions) getOptGen_;
-		alias getOptGen_ this;
 	}
 }
