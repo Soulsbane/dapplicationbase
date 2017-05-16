@@ -19,13 +19,13 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 		this()
 		{
 			// We have to jump through a bunch of hoops here since D doesn't support multiple inheritance.
-			this.getOptGen_ = new GetOptCodeGenerator!(AppOptions);
+			getOptGen_ = new GetOptCodeGenerator!(AppOptions);
 
-			this.getOptGen_.setCallback!"onNoArguments"(&onNoArguments);
-			this.getOptGen_.setCallback!"onHelp"(&onHelp);
-			this.getOptGen_.setCallback!"onValidArguments"(&onValidArguments);
-			this.getOptGen_.setCallback!"onUnknownArgument"(&onUnknownArgument);
-			this.getOptGen_.setCallback!"onInvalidArgument"(&onInvalidArgument);
+			getOptGen_.setCallback!"onNoArguments"(&onNoArguments);
+			getOptGen_.setCallback!"onHelp"(&onHelp);
+			getOptGen_.setCallback!"onValidArguments"(&onValidArguments);
+			getOptGen_.setCallback!"onUnknownArgument"(&onUnknownArgument);
+			getOptGen_.setCallback!"onInvalidArgument"(&onInvalidArgument);
 		}
 
 		// We have to reimplement these callbacks since alias this doesn't support override of a member function
@@ -77,7 +77,7 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 
 		void setCallback(alias name, Func)(Func callback)
 		{
-			this.getOptGen_.setCallback!name(callback);
+			getOptGen_.setCallback!name(callback);
 		}
 
 	public alias getOptGen_ this;
