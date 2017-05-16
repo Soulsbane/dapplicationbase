@@ -70,6 +70,12 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 			options_.loadFile(fileName);
 		}
 
+		void saveOptions()
+		{
+			immutable string fileName = buildNormalizedPath(path_.getDir("config"), "app.config");
+			options_.save(fileName);
+		}
+
 		void handleCmdLineArguments(string[] arguments)
 		{
 			getOptGen_.generate(arguments, options_);
