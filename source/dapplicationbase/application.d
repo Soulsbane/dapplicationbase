@@ -11,67 +11,15 @@ public import ctoptions.getoptmixin;
 public import ctoptions.structoptions;
 public import std.getopt;
 
-private interface EmptyBase {}
 private struct OptionsBase {}
 
-mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = EmptyBase)
-{
 	/**
 		A simple class for creating a command line application. Much of the functionality is pulled from
 		ctoptions library. Specifically structoptions and getoptmixin.
 	*/
-	class Application : InheritedClass
+	class Application(AppOptions = OptionsBase) : GetOptCodeGenerator!AppOptions
 	{
 	public:
-		this()
-		{
-			// We have to jump through a bunch of hoops here since D doesn't support multiple inheritance.
-			getOptGen_ = new GetOptCodeGenerator!(AppOptions);
-
-			getOptGen_.setCallback!"onNoArguments"(&onNoArguments);
-			getOptGen_.setCallback!"onHelp"(&onHelp);
-			getOptGen_.setCallback!"onValidArguments"(&onValidArguments);
-			getOptGen_.setCallback!"onUnknownArgument"(&onUnknownArgument);
-			getOptGen_.setCallback!"onInvalidArgument"(&onInvalidArgument);
-		}
-
-		// We have to reimplement these callbacks since alias this doesn't support override of a member function
-		// in the inherited class.
-
-		/**
-			Called when no arguments are passed to the command line.
-		*/
-		void onNoArguments() {}
-
-		/**
-			Called when --help is passed to the command line.
-		*/
-		void onHelp(Option[] options)
-		{
-			defaultGetoptPrinter("The following options are available:", options);
-		}
-
-		/**
-			Called when all arguments containing no errors are passed to the command line.
-		*/
-		void onValidArguments() {}
-
-		/**
-			Called when an argument is missing it's value. Example: <applicationName> --id=10 but the 10 is left out.
-		*/
-		void onUnknownArgument(const string msg)
-		{
-			writeln(msg, ". For a list of available commands use --help.");
-		}
-
-		/**
-			Called when an argument is passed a wrong type. Example: int id; --id=hello
-		*/
-		void onInvalidArgument(const string msg)
-		{
-			writeln("Invalid Argument!");
-			writeln(msg);
-		}
 
 		/**
 			Creates a new application.
@@ -126,26 +74,10 @@ mixin template ApplicationMixin(AppOptions = OptionsBase, InheritedClass = Empty
 		*/
 		void handleCmdLineArguments(string[] arguments)
 		{
-			getOptGen_.generate(arguments, options_);
+			generate(arguments, options_);
 		}
-
-		/**
-			Allows callback methods in GetOptCodeGenerator to be overridden.
-
-			Params:
-				name = Name of the callback to override.
-				callback = the callback function/method to use.
-		*/
-		void setCallback(alias name, Func)(Func callback)
-		{
-			getOptGen_.setCallback!name(callback);
-		}
-
-	public alias getOptGen_ this;
 
 	protected:
 		ConfigPath path_;
 		StructOptions!AppOptions options_;
-		GetOptCodeGenerator!(AppOptions) getOptGen_;
 	}
-}
