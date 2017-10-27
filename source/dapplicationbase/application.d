@@ -17,7 +17,7 @@ private struct OptionsBase {}
 	A simple class for creating a command line application. Much of the functionality is pulled from
 	ctoptions library. Specifically structoptions and getoptmixin.
 */
-class Application(AppOptions = OptionsBase) : GetOptCodeGenerator!AppOptions
+class Application(AppOptions = OptionsBase) : GetOptCodeGenerator!(AppOptions, false)
 {
 public:
 
@@ -76,6 +76,8 @@ public:
 	{
 		generate(arguments, options_);
 	}
+
+	alias options = options_;
 
 protected:
 	ConfigPath path_;
