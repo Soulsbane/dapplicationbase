@@ -29,14 +29,22 @@ public:
 				users config directory using the specified name. Note: Can pass a empty string.
 			applicationName = Name of the application. This will be used for creating a folder inside user's
 				config/<orgranizationName>/<applicationName>
+			arguments = The application's command line arguments.
 
 	*/
-	void create(const string organizationName, const string applicationName)
+	void create(const string organizationName, const string applicationName, string[] arguments)
 	{
 		path_.create(organizationName, applicationName);
 		createConfigDirs("config");
 		loadOptions();
+		handleCmdLineArguments(arguments);
+		onCreate();
 	}
+
+	/**
+		Used for notifying the inherited class that the basic application setup is completed.
+	*/
+	void onCreate() {}
 
 	/**
 		Creates a directory or directories in the user's config/<applicationName> directory.
