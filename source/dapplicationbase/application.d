@@ -4,12 +4,9 @@
 module dapplicationbase.application;
 
 public import std.path : buildNormalizedPath;
-public import std.stdio;
 
 public import dpathutils.config;
-public import ctoptions.getoptmixin;
-public import ctoptions.structoptions;
-public import std.getopt;
+public import ctoptions;
 
 private struct OptionsBase {}
 
