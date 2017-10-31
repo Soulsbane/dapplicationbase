@@ -57,12 +57,12 @@ public:
 	/**
 		Loads the StructOptions config file.
 	*/
-	void loadOptions()
+	bool loadOptions()
 	{
 		immutable string fileName = buildNormalizedPath(path_.getDir("config"), "app.config");
 
 		options_.createDefaultFile(fileName);
-		options_.loadFile(fileName);
+		return options_.loadFile(fileName);
 	}
 
 	/**
