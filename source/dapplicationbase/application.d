@@ -47,7 +47,7 @@ public:
 		Creates a directory or directories in the user's config/<applicationName> directory.
 
 		Params:
-			A list of directories to create.
+			dirs = A list of directories to create.
 	*/
 	void createConfigDirs(T...)(T dirs)
 	{
