@@ -59,7 +59,7 @@ public:
 	*/
 	bool loadOptions()
 	{
-		immutable string fileName = buildNormalizedPath(path_.getDir("config"), "app.config");
+		immutable string fileName = buildNormalizedPath(path_.getAppDir("config"), "app.config");
 
 		options_.createDefaultFile(fileName);
 		return options_.loadFile(fileName);
@@ -70,7 +70,7 @@ public:
 	*/
 	void saveOptions()
 	{
-		immutable string fileName = buildNormalizedPath(path_.getDir("config"), "app.config");
+		immutable string fileName = buildNormalizedPath(path_.getAppDir("config"), "app.config");
 		options_.save(fileName);
 	}
 
