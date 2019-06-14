@@ -8,6 +8,8 @@ public import std.path : buildNormalizedPath;
 public import dpathutils.config;
 public import ctoptions;
 
+import dapplicationbase.settings;
+
 private struct OptionsBase {}
 
 /**
@@ -87,4 +89,46 @@ public:
 protected:
 	ConfigPath path_;
 	StructOptions!AppOptions options_;
+}
+
+class NextGenApplication(AppOptions = OptionsBase) : GetOptCodeGenerator!(AppOptions, No.generateHelperMethods)
+{
+public:
+
+		/**
+		Creates a new application.
+
+		Params:
+			organizationName = Name of the organization/company. This is used for creating a folder inside
+				users config directory using the specified name. Note: Can pass a empty string.
+			applicationName = Name of the application. This will be used for creating a folder inside user's
+				config/<orgranizationName>/<applicationName>
+			arguments = The application's command line arguments.
+
+	*/
+	void create(const string organizationName, const string applicationName, string[] arguments,
+		const Flag!"createDirs" createDirs = Yes.createDirs)
+	{
+		Path.create(organizationName, applicationName, createDirs);
+		//createConfigDirs("config");
+		//loadOptions();
+		handleCmdLineArguments(arguments);
+		onCreate();
+	}
+
+	/**
+		Used for notifying the inherited class that the basic application setup is completed.
+	*/
+	void onCreate() {}
+
+	/**
+		Generates getopt code using ctoptions.getoptmixin module.
+	*/
+	void handleCmdLineArguments(string[] arguments)
+	{
+		generate(arguments, settings_.Options);
+	}
+
+	Settings!AppOptions settings_;
+	alias settings_ this;
 }
