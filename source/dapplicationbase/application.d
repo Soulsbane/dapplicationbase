@@ -112,6 +112,7 @@ public:
 	{
 		settings_.createDir("config");
 		settings_.create(organizationName, applicationName, createDirs);
+
 		loadOptions();
 		handleCmdLineArguments(arguments);
 		onCreate();
@@ -130,6 +131,15 @@ public:
 		immutable string fileName = buildNormalizedPath(settings_.getAppConfigDir("config"), "app.config");
 		settings_.createDefaultFile(fileName);
 		return settings_.loadFile(fileName);
+	}
+
+	/**
+		Saves the StructOptions config file.
+	*/
+	void saveOptions()
+	{
+		immutable string fileName = buildNormalizedPath(path_.getAppConfigDir("config"), "app.config");
+		options_.save(fileName);
 	}
 
 	/**
