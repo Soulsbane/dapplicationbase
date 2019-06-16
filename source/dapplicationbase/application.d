@@ -4,6 +4,7 @@
 module dapplicationbase.application;
 
 public import std.path : buildNormalizedPath;
+import std.stdio;
 
 public import dpathutils.config;
 public import ctoptions;
@@ -109,9 +110,9 @@ public:
 	void create(const string organizationName, const string applicationName, string[] arguments,
 		const Flag!"createDirs" createDirs = Yes.createDirs)
 	{
-		Path.create(organizationName, applicationName, createDirs);
-		//createConfigDirs("config");
-		//loadOptions();
+		settings_.createDir("config");
+		settings_.create(organizationName, applicationName, createDirs);
+		loadOptions();
 		handleCmdLineArguments(arguments);
 		onCreate();
 	}
@@ -120,6 +121,16 @@ public:
 		Used for notifying the inherited class that the basic application setup is completed.
 	*/
 	void onCreate() {}
+
+	/**
+		Loads the StructOptions config file.
+	*/
+	bool loadOptions()
+	{
+		immutable string fileName = buildNormalizedPath(settings_.getAppConfigDir("config"), "app.config");
+		settings_.createDefaultFile(fileName);
+		return settings_.loadFile(fileName);
+	}
 
 	/**
 		Generates getopt code using ctoptions.getoptmixin module.
