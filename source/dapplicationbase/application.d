@@ -31,7 +31,6 @@ public:
 	void create(const string organizationName, const string applicationName, string[] arguments,
 		const Flag!"createDirs" createDirs = Yes.createDirs)
 	{
-		settings_.createDir("config");
 		settings_.create(organizationName, applicationName, createDirs);
 
 		loadOptions();
